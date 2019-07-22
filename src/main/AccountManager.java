@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class AccountManager {
-
     private Connection conn;
 
     public AccountManager(Connection conn) {
@@ -78,5 +77,4 @@ public class AccountManager {
             throw new RuntimeException(e.getMessage());
         }
     }
-
 }

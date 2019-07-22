@@ -12,11 +12,10 @@ import java.io.File;
 import java.io.IOException;
 
 public class LoginPanel extends JPanel {
-
-    private static final String imagePath = "resources/background_cards.jpg";
+    private static final String imagePath = "resources/backgrounds/background_cards.jpg";
     private MainFrame mainFrame;
     private AccountManager accountManager;
-    private BufferedImage image;
+    private BufferedImage background;
     private JButton login;
     private JTextField username;
 
@@ -37,26 +36,27 @@ public class LoginPanel extends JPanel {
         this.accountManager = accountManager;
         this.mainFrame = mainFrame;
         try {
-            image = ImageIO.read(new File(imagePath));
+            background = ImageIO.read(new File(imagePath));
         } catch (IOException e) {
             throw new RuntimeException("Image file not found for login panel");
         }
     }
 
+    public void clearText() {
+        username.setText("");
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(image.getScaledInstance(getWidth(), getHeight(), Image.SCALE_FAST), 0, 0, this);
+        g.drawImage(background.getScaledInstance(getWidth(), getHeight(), Image.SCALE_FAST), 0, 0, this);
     }
 
     class LoginListener implements ActionListener {
-
         @Override
         public void actionPerformed(ActionEvent e) {
             accountManager.login(username.getText().toLowerCase());
             mainFrame.login(username.getText().toLowerCase());
         }
-
     }
-
 }
