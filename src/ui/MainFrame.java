@@ -1,16 +1,23 @@
 package ui;
 
 import main.AccountManager;
+import main.BotGame;
+import main.Game;
+import main.Player;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JFrame;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+
 
 public class MainFrame extends JFrame {
     private AccountManager accountManager;
-    private LoginPanel login;
-    private MenuPanel menu;
-    private GamePanel game;
+    private Player player;
+    private LoginPanel loginPanel;
+    private MenuPanel menuPanel;
+    private GamePanel gamePanel;
     private Dimension screenSize;
+    private Game game;
 
     public MainFrame(AccountManager accountManager) {
         this.accountManager = accountManager;
@@ -20,36 +27,53 @@ public class MainFrame extends JFrame {
         setSize(screenSize.width / 2, screenSize.height / 2);
         setLocationRelativeTo(null);
 
-        login = new LoginPanel(this, accountManager);
-        menu = new MenuPanel(this, accountManager);
-        game = new GamePanel(this, accountManager);
+        loginPanel = new LoginPanel(this, accountManager);
+        menuPanel = new MenuPanel(this, accountManager);
+        gamePanel = new GamePanel(this, accountManager);
 
-        add(login);
-        add(menu);
-        add(game);
+        add(loginPanel);
+        add(menuPanel);
+        add(gamePanel);
         setVisible(true);
     }
 
     public void login(String username) {
-        login.setVisible(false);
-        menu.login(username, accountManager.getCoins(username));
-        menu.setVisible(true);
+        player = new Player(username, accountManager);
+        loginPanel.setVisible(false);
+        menuPanel.login(username, accountManager.getCoins(username));
+        menuPanel.setVisible(true);
     }
 
     public void logout() {
-        menu.setVisible(false);
-        login.clearText();
-        login.setVisible(true);
+        menuPanel.setVisible(false);
+        loginPanel.clearText();
+        loginPanel.setVisible(true);
     }
 
     public void joinGame() {
-        menu.setVisible(false);
-        game.setVisible(true);
+        menuPanel.setVisible(false);
+        player.joinGame();
+        gamePanel.setPlayer(player);
+        gamePanel.setVisible(true);
+        game = new BotGame(player, this, accountManager, 1, 2);
     }
 
     public void leaveGame() {
-        game.setVisible(false);
-        menu.updateCoins();
-        menu.setVisible(true);
+        gamePanel.setVisible(false);
+        menuPanel.updateCoins();
+        player.leaveGame();
+        menuPanel.setVisible(true);
+    }
+
+    public MenuPanel getMenuPanel() {
+        return menuPanel;
+    }
+
+    public LoginPanel getLoginPanel() {
+        return loginPanel;
+    }
+
+    public GamePanel getGamePanel() {
+        return gamePanel;
     }
 }

@@ -1,10 +1,20 @@
 package ui;
 
 import main.AccountManager;
+import main.Player;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -18,9 +28,10 @@ public class GamePanel extends JPanel {
     private AccountManager accountManager;
     private BufferedImage background;
     private JPanel topPanel, bottomPanel, leftPanel, rightPanel;
-    private JLabel topCards, bottomCards;
+    private JLabel topCards, bottomCards, gameCoins;
     private JButton leave, bet, fold, call;
     private JTextField amount;
+    private Player player;
 
     public GamePanel(MainFrame mainFrame, AccountManager accountManager) {
         setLayout(new BorderLayout());
@@ -67,16 +78,23 @@ public class GamePanel extends JPanel {
         leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
         leftPanel.setBackground(Color.WHITE);
         add(leftPanel, BorderLayout.LINE_START);
+        gameCoins = new JLabel("Stack: 0");
         amount = new JTextField();
-        amount.setColumns(13);
+        amount.setColumns(8);
         amount.setMaximumSize(amount.getPreferredSize());
         bet = new JButton("Bet");
         call = new JButton("Call");
         fold = new JButton("Fold");
+        leftPanel.add(gameCoins);
         leftPanel.add(amount);
         leftPanel.add(bet);
         leftPanel.add(call);
         leftPanel.add(fold);
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
+        gameCoins.setText("Stack: " + player.getGameCoins());
     }
 
     @Override

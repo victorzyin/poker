@@ -10,10 +10,6 @@ import java.sql.DriverManager;
 import java.util.Properties;
 
 public class PokerMain {
-    public static void main(String[] args) {
-        new PokerMain().run();
-    }
-
     public void run() {
         Connection conn;
         Properties prop = new Properties();
@@ -38,5 +34,9 @@ public class PokerMain {
         }
         AccountManager accountManager = new AccountManager(conn);
         MainFrame mainFrame = new MainFrame(accountManager);
+    }
+
+    public static void main(String[] args) {
+        new PokerMain().run();
     }
 }
